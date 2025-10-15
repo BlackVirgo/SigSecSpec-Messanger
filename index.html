@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureChat - Internal Messenger</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1400px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 40px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        /* Header */
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .chat-item:hover {
+            background: #e8e9eb;
+        }
+
+        .chat-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .chat-item-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .chat-item.active .chat-badge {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .chat-item-subtitle {
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-item.active .chat-item-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .chat-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #f8f9fa;
+        }
+
+        .chat-header h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .chat-header p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 30px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            max-width: 70%;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+
+        .message-header {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 16px;
+            word-wrap: break-word;
+        }
+
+        .message.sent .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.received .message-bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .supervision-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #856404;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px 30px;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 24px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .input-container input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn-send:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-send:active {
+            transform: scale(0.95);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Role Hierarchy Configuration
+        const ROLES = {
+            CLIENT: { name: 'Client', level: 0 },
+            GUARD: { name: 'Guard', level: 1 },
+            LEAD_OFFICER: { name: 'Lead Officer', level: 2 },
+            TRAINING_OFFICER: { name: 'Training Officer', level: 3 },
+            SUPERVISOR: { name: 'Supervisor', level: 4 },
+            OPERATIONS_MANAGER: { name: 'Operations Manager', level: 5 },
+            OPERATIONS_DIRECTOR: { name: 'Operations Director', level: 6 },
+            DISPATCH: { name: 'Dispatch', level: 7 },
+            SECRETARY: { name: 'Secretary', level: 8 },
+            CO_OWNER: { name: 'Co-Owner', level: 9 },
+            OWNER: { name: 'Owner', level: 10 }
+        };
+
+        // Test Accounts
+        const USERS = {
+            testclient: { username: 'testclient', role: ROLES.CLIENT, displayName: 'Test Client' },
+            testguard1: { username: 'testguard1', role: ROLES.GUARD, displayName: 'Test Guard 1' },
+            testleadofficer: { username: 'testleadofficer', role: ROLES.LEAD_OFFICER, displayName: 'Test Lead Officer' },
+            testtrainingofficer: { username: 'testtrainingofficer', role: ROLES.TRAINING_OFFICER, displayName: 'Test Training Officer' },
+            testsupervisor: { username: 'testsupervisor', role: ROLES.SUPERVISOR, displayName: 'Test Supervisor' },
+            testoperationsmanager: { username: 'testoperationsmanager', role: ROLES.OPERATIONS_MANAGER, displayName: 'Test Operations Manager' },
+            testoperationsdirector: { username: 'testoperationsdirector', role: ROLES.OPERATIONS_DIRECTOR, displayName: 'Test Operations Director' },
+            testdispatch: { username: 'testdispatch', role: ROLES.DISPATCH, displayName: 'Test Dispatch' },
+            testsecretary: { username: 'testsecretary', role: ROLES.SECRETARY, displayName: 'Test Secretary' },
+            testcoowner: { username: 'testcoowner', role: ROLES.CO_OWNER, displayName: 'Test Co-Owner' },
+            testowner: { username: 'testowner', role: ROLES.OWNER, displayName: 'Test Owner' }
+        };
+
+        // Chat Categories Configuration
+        const CHAT_TYPES = {
+            MISSION: 'Mission Chat',
+            TRAINING: 'Training Chat',
+            SUPERVISION: 'Supervision Chat',
+            OPERATIONS: 'Operations Chat',
+            DISPATCH: 'Dispatch Chat',
+            MANAGEMENT: 'Management Chat',
+            DIRECT: 'Direct Chat'
+        };
+
+        // Define chat configurations based on roles
+        const getChatConfigurations = (currentUser) => {
+            const configs = [];
+
+            if (currentUser.role === ROLES.GUARD) {
+                configs.push(
+                    { type: CHAT_TYPES.MISSION, participants: ['testguard1', 'testleadofficer'], description: 'Discuss mission assignments and updates' },
+                    { type: CHAT_TYPES.TRAINING, participants: ['testguard1', 'testtrainingofficer'], description: 'Training topics and guidance' },
+                    { type: CHAT_TYPES.SUPERVISION, participants: ['testguard1', 'testsupervisor'], description: 'Reports and oversight discussions' },
+                    { type: CHAT_TYPES.OPERATIONS, participants: ['testguard1', 'testoperationsmanager', 'testoperationsdirector'], description: 'Company operations and management' },
+                    { type: CHAT_TYPES.DISPATCH, participants: ['testguard1', 'testdispatch'], description: 'Real-time field coordination' },
+                    { type: CHAT_TYPES.MANAGEMENT, participants: ['testguard1', 'testsecretary', 'testcoowner', 'testowner'], description: 'Executive communication' }
+                );
+            } else if (currentUser.role === ROLES.LEAD_OFFICER) {
+                configs.push(
+                    { type: CHAT_TYPES.MISSION, participants: ['testguard1', 'testleadofficer'], description: 'Mission coordination with guards' },
+                    { type: CHAT_TYPES.SUPERVISION, participants: ['testleadofficer', 'testsupervisor'], description: 'Supervision and reporting' },
+                    { type: CHAT_TYPES.OPERATIONS, participants: ['testleadofficer', 'testoperationsmanager', 'testoperationsdirector'], description: 'Operations coordination' }
+                );
+            } else if (currentUser.role === ROLES.TRAINING_OFFICER) {
+                configs.push(
+                    { type: CHAT_TYPES.TRAINING, participants: ['testguard1', 'testtrainingofficer'], description: 'Guard training and development' },
+                    { type: CHAT_TYPES.SUPERVISION, participants: ['testtrainingofficer', 'testsupervisor'], description: 'Training oversight' }
+                );
+            } else if (currentUser.role === ROLES.SUPERVISOR) {
+                configs.push(
+                    { type: CHAT_TYPES.SUPERVISION, participants: ['testguard1', 'testsupervisor'], description: 'Guard supervision' },
+                    { type: CHAT_TYPES.SUPERVISION, participants: ['testleadofficer', 'testsupervisor'], description: 'Lead officer oversight' },
+                    { type: CHAT_TYPES.SUPERVISION, participants: ['testtrainingofficer', 'testsupervisor'], description: 'Training oversight' },
+                    { type: CHAT_TYPES.OPERATIONS, participants: ['testsupervisor', 'testoperationsmanager', 'testoperationsdirector'], description: 'Operations reporting' }
+                );
+            } else if (currentUser.role === ROLES.OPERATIONS_MANAGER || currentUser.role === ROLES.OPERATIONS_DIRECTOR) {
+                configs.push(
+                    { type: CHAT_TYPES.OPERATIONS, participants: ['testguard1', 'testoperationsmanager', 'testoperationsdirector'], description: 'Guard operations' },
+                    { type: CHAT_TYPES.OPERATIONS, participants: ['testsupervisor', 'testoperationsmanager', 'testoperationsdirector'], description: 'Supervisor coordination' },
+                    { type: CHAT_TYPES.MANAGEMENT, participants: ['testoperationsmanager', 'testoperationsdirector', 'testsecretary', 'testcoowner', 'testowner'], description: 'Executive operations' }
+                );
+            } else if (currentUser.role === ROLES.DISPATCH) {
+                configs.push(
+                    { type: CHAT_TYPES.DISPATCH, participants: ['testguard1', 'testdispatch'], description: 'Field coordination with guards' }
+                );
+            } else if (currentUser.role.level >= ROLES.SECRETARY.level) {
+                configs.push(
+                    { type: CHAT_TYPES.MANAGEMENT, participants: ['testguard1', 'testsecretary', 'testcoowner', 'testowner'], description: 'Executive-Guard communication' },
+                    { type: CHAT_TYPES.MANAGEMENT, participants: ['testoperationsmanager', 'testoperationsdirector', 'testsecretary', 'testcoowner', 'testowner'], description: 'Executive management' }
+                );
+            }
+
+            return configs;
+        };
+
+        // Check if user can access a chat (based on hierarchy supervision)
+        const canAccessChat = (currentUser, chat) => {
+            // User can access if they're a participant
+            if (chat.participants.includes(currentUser.username)) {
+                return true;
+            }
+
+            // Higher-ranking users can supervise lower-ranking conversations
+            const chatParticipants = chat.participants.map(username => USERS[username]);
+            const maxChatLevel = Math.max(...chatParticipants.map(u => u.role.level));
+
+            // If current user's level is higher than all participants, they can supervise
+            return currentUser.role.level > maxChatLevel;
+        };
+
+        // Get all accessible chats for a user
+        const getAccessibleChats = (currentUser) => {
+            const allChats = [];
+
+            // Get all possible chat configurations
+            Object.values(USERS).forEach(user => {
+                const userChats = getChatConfigurations(user);
+                userChats.forEach(chat => {
+                    const chatId = chat.participants.sort().join('-');
+                    if (!allChats.find(c => c.id === chatId)) {
+                        allChats.push({ ...chat, id: chatId });
+                    }
+                });
+            });
+
+            // Filter to only accessible chats
+            return allChats.filter(chat => canAccessChat(currentUser, chat));
+        };
+
+        // Check if current user is supervising a chat
+        const isSupervising = (currentUser, chat) => {
+            return canAccessChat(currentUser, chat) && !chat.participants.includes(currentUser.username);
+        };
+
+        // Local Storage helpers
+        const getMessages = () => {
+            const stored = localStorage.getItem('messengerMessages');
+            return stored ? JSON.parse(stored) : {};
+        };
+
+        const saveMessage = (chatId, message) => {
+            const messages = getMessages();
+            if (!messages[chatId]) {
+                messages[chatId] = [];
+            }
+            messages[chatId].push(message);
+            localStorage.setItem('messengerMessages', JSON.stringify(messages));
+        };
+
+        // Login Component
+        function LoginScreen({ onLogin }) {
+            const [selectedUser, setSelectedUser] = useState('');
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                if (selectedUser) {
+                    onLogin(USERS[selectedUser]);
+                }
+            };
+
+            return (
+                <div className="login-container">
+                    <div className="login-box">
+                        <h1>🔒 SecureChat</h1>
+                        <p>Internal Company Messenger</p>
+                        <form onSubmit={handleLogin}>
+                            <div className="form-group">
+                                <label>Select Test Account</label>
+                                <select 
+                                    value={selectedUser} 
+                                    onChange={(e) => setSelectedUser(e.target.value)}
+                                    required
+                                >
+                                    <option value="">-- Select Account --</option>
+                                    {Object.entries(USERS).map(([username, user]) => (
+                                        <option key={username} value={username}>
+                                            {user.displayName} ({user.role.name})
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <button type="submit" className="btn-login">
+                                Login
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // Chat Item Component
+        function ChatItem({ chat, isActive, onClick, currentUser }) {
+            const messages = getMessages()[chat.id] || [];
+            const lastMessage = messages[messages.length - 1];
+            const supervising = isSupervising(currentUser, chat);
+
+            const getChatTitle = () => {
+                const otherParticipants = chat.participants
+                    .filter(p => p !== currentUser.username)
+                    .map(p => USERS[p].displayName);
+                return otherParticipants.join(', ');
+            };
+
+            return (
+                <div 
+                    className={`chat-item ${isActive ? 'active' : ''}`}
+                    onClick={onClick}
+                >
+                    <div className="chat-item-title">
+                        {getChatTitle()}
+                        <span className="chat-badge">{chat.type}</span>
+                    </div>
+                    <div className="chat-item-subtitle">
+                        {supervising && '👁️ Supervising • '}
+                        {lastMessage ? lastMessage.text : chat.description}
+                    </div>
+                </div>
+            );
+        }
+
+        // Message Component
+        function Message({ message, currentUser }) {
+            const isSent = message.sender === currentUser.username;
+            const sender = USERS[message.sender];
+
+            return (
+                <div className={`message ${isSent ? 'sent' : 'received'}`}>
+                    {!isSent && (
+                        <div className="message-header">
+                            {sender.displayName} • {sender.role.name}
+                        </div>
+                    )}
+                    <div className="message-bubble">
+                        {message.text}
+                    </div>
+                    <div className="message-time">
+                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                </div>
+            );
+        }
+
+        // Chat Area Component
+        function ChatArea({ chat, currentUser }) {
+            const [messages, setMessages] = useState([]);
+            const [inputText, setInputText] = useState('');
+            const messagesEndRef = useRef(null);
+            const supervising = isSupervising(currentUser, chat);
+
+            useEffect(() => {
+                const loadMessages = () => {
+                    const allMessages = getMessages();
+                    setMessages(allMessages[chat.id] || []);
+                };
+
+                loadMessages();
+                const interval = setInterval(loadMessages, 1000);
+                return () => clearInterval(interval);
+            }, [chat.id]);
+
+            useEffect(() => {
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, [messages]);
+
+            const handleSend = (e) => {
+                e.preventDefault();
+                if (inputText.trim() && !supervising) {
+                    const message = {
+                        sender: currentUser.username,
+                        text: inputText.trim(),
+                        timestamp: new Date().toISOString()
+                    };
+                    saveMessage(chat.id, message);
+                    setInputText('');
+                    setMessages([...messages, message]);
+                }
+            };
+
+            const getChatTitle = () => {
+                const otherParticipants = chat.participants
+                    .filter(p => p !== currentUser.username)
+                    .map(p => USERS[p].displayName);
+                return otherParticipants.join(', ');
+            };
+
+            return (
+                <div className="chat-area">
+                    <div className="chat-header">
+                        <h3>{getChatTitle()}</h3>
+                        <p>{chat.type} • {chat.description}</p>
+                    </div>
+                    <div className="messages-container">
+                        {supervising && (
+                            <div className="supervision-notice">
+                                <span>👁️</span>
+                                <div>
+                                    <strong>Supervision Mode:</strong> You are monitoring this conversation. 
+                                    Messages sent by participants are visible to you due to your higher rank.
+                                </div>
+                            </div>
+                        )}
+                        {messages.map((msg, idx) => (
+                            <Message key={idx} message={msg} currentUser={currentUser} />
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+                    <div className="input-area">
+                        {supervising ? (
+                            <div style={{ textAlign: 'center', color: '#999', fontStyle: 'italic' }}>
+                                You are in supervision mode. You can view messages but cannot send them in this chat.
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSend} className="input-container">
+                                <input
+                                    type="text"
+                                    placeholder="Type a message..."
+                                    value={inputText}
+                                    onChange={(e) => setInputText(e.target.value)}
+                                />
+                                <button type="submit" className="btn-send">Send</button>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [currentUser, setCurrentUser] = useState(null);
+            const [selectedChat, setSelectedChat] = useState(null);
+            const [accessibleChats, setAccessibleChats] = useState([]);
+
+            useEffect(() => {
+                if (currentUser) {
+                    const chats = getAccessibleChats(currentUser);
+                    setAccessibleChats(chats);
+                    if (chats.length > 0 && !selectedChat) {
+                        setSelectedChat(chats[0]);
+                    }
+                }
+            }, [currentUser]);
+
+            const handleLogout = () => {
+                setCurrentUser(null);
+                setSelectedChat(null);
+            };
+
+            if (!currentUser) {
+                return <LoginScreen onLogin={setCurrentUser} />;
+            }
+
+            return (
+                <div className="app-container">
+                    <div className="app-header">
+                        <h1>🔒 SecureChat</h1>
+                        <div className="user-info">
+                            <div className="user-badge">
+                                {currentUser.displayName} • {currentUser.role.name}
+                            </div>
+                            <button className="btn-logout" onClick={handleLogout}>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                    <div className="main-content">
+                        <div className="sidebar">
+                            <div className="sidebar-header">
+                                <h2>Chats</h2>
+                                <p style={{ fontSize: '13px', color: '#666' }}>
+                                    {accessibleChats.length} conversation{accessibleChats.length !== 1 ? 's' : ''}
+                                </p>
+                            </div>
+                            <div className="chat-list">
+                                {accessibleChats.map(chat => (
+                                    <ChatItem
+                                        key={chat.id}
+                                        chat={chat}
+                                        isActive={selectedChat?.id === chat.id}
+                                        onClick={() => setSelectedChat(chat)}
+                                        currentUser={currentUser}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        {selectedChat ? (
+                            <ChatArea chat={selectedChat} currentUser={currentUser} />
+                        ) : (
+                            <div className="chat-area">
+                                <div className="empty-state">
+                                    <div className="empty-state-icon">💬</div>
+                                    <h3>No chat selected</h3>
+                                    <p>Select a conversation to start messaging</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
