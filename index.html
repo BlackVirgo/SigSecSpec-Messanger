@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureChat - Internal Messenger</title>
+    <title>PoliceComm - Tactical Communications System</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -15,22 +15,24 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', 'Roboto Condensed', 'Arial Black', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d30 50%, #1e1e1e 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            color: #e0e0e0;
         }
 
         .app-container {
             width: 100%;
             max-width: 1400px;
             height: 90vh;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: #1e1e1e;
+            border: 2px solid #404040;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 100, 255, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -47,23 +49,28 @@
         }
 
         .login-box {
-            background: white;
+            background: #2d2d30;
             padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid #404040;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 100, 255, 0.2);
             width: 100%;
             max-width: 400px;
         }
 
         .login-box h1 {
-            color: #667eea;
+            color: #00aaff;
             margin-bottom: 10px;
             font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .login-box p {
-            color: #666;
+            color: #b0b0b0;
             margin-bottom: 30px;
+            font-weight: 500;
         }
 
         .form-group {
@@ -73,39 +80,49 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
+            color: #e0e0e0;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
         }
 
         .form-group select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border: 2px solid #404040;
+            border-radius: 4px;
             font-size: 14px;
+            background: #1a1a1a;
+            color: #e0e0e0;
             transition: border-color 0.3s;
         }
 
         .form-group select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #00aaff;
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
         }
 
         .btn-login {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
             color: white;
-            border: none;
-            border-radius: 8px;
+            border: 2px solid #0088ff;
+            border-radius: 4px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn-login:hover {
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, #0088ff 0%, #0066cc 100%);
+            box-shadow: 0 0 15px rgba(0, 136, 255, 0.5);
+            transform: translateY(-1px);
         }
 
         .btn-login:active {
@@ -114,18 +131,22 @@
 
         /* Header */
         .app-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d30 100%);
+            border-bottom: 3px solid #00aaff;
             color: white;
-            padding: 20px 30px;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         .app-header h1 {
             font-size: 24px;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #00aaff;
         }
 
         .user-info {
@@ -135,25 +156,33 @@
         }
 
         .user-badge {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 170, 255, 0.2);
+            border: 1px solid #00aaff;
             padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn-logout {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff4444;
+            color: #ff4444;
             padding: 8px 20px;
-            border-radius: 20px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
         }
 
         .btn-logout:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
         }
 
         /* Main Content */
@@ -166,21 +195,25 @@
         /* Sidebar */
         .sidebar {
             width: 320px;
-            background: #f8f9fa;
-            border-right: 1px solid #e0e0e0;
+            background: #252526;
+            border-right: 2px solid #404040;
             display: flex;
             flex-direction: column;
         }
 
         .sidebar-header {
             padding: 20px;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 2px solid #404040;
+            background: #2d2d30;
         }
 
         .sidebar-header h2 {
-            font-size: 18px;
-            color: #333;
+            font-size: 16px;
+            color: #00aaff;
             margin-bottom: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .chat-list {
@@ -190,18 +223,22 @@
 
         .chat-item {
             padding: 16px 20px;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #404040;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            background: #252526;
         }
 
         .chat-item:hover {
-            background: #e8e9eb;
+            background: #2d2d30;
+            border-left: 3px solid #00aaff;
         }
 
         .chat-item.active {
-            background: #667eea;
+            background: #0066cc;
             color: white;
+            border-left: 4px solid #00aaff;
+            box-shadow: inset 0 0 10px rgba(0, 170, 255, 0.3);
         }
 
         .chat-item-title {
@@ -213,28 +250,34 @@
         }
 
         .chat-badge {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            background: rgba(102, 126, 234, 0.2);
-            color: #667eea;
+            font-size: 9px;
+            padding: 3px 8px;
+            border-radius: 2px;
+            background: rgba(0, 170, 255, 0.2);
+            border: 1px solid #00aaff;
+            color: #00aaff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .chat-item.active .chat-badge {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
             color: white;
         }
 
         .chat-item-subtitle {
-            font-size: 13px;
-            color: #666;
+            font-size: 12px;
+            color: #b0b0b0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-weight: 500;
         }
 
         .chat-item.active .chat-item-subtitle {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         /* Chat Area */
@@ -242,31 +285,35 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: white;
+            background: #1e1e1e;
         }
 
         .chat-header {
             padding: 20px 30px;
-            border-bottom: 1px solid #e0e0e0;
-            background: #f8f9fa;
+            border-bottom: 2px solid #404040;
+            background: #2d2d30;
         }
 
         .chat-header h3 {
-            font-size: 18px;
-            color: #333;
+            font-size: 16px;
+            color: #00aaff;
             margin-bottom: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .chat-header p {
-            font-size: 13px;
-            color: #666;
+            font-size: 12px;
+            color: #b0b0b0;
+            font-weight: 500;
         }
 
         .messages-container {
             flex: 1;
             overflow-y: auto;
             padding: 20px 30px;
-            background: #f8f9fa;
+            background: #1a1a1a;
         }
 
         .message {
@@ -287,10 +334,12 @@
         }
 
         .message-header {
-            font-size: 12px;
-            color: #666;
+            font-size: 11px;
+            color: #b0b0b0;
             margin-bottom: 4px;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .message-bubble {
@@ -300,42 +349,47 @@
         }
 
         .message.sent .message-bubble {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            border: 1px solid #0088ff;
             color: white;
             border-bottom-right-radius: 4px;
+            font-weight: 500;
         }
 
         .message.received .message-bubble {
-            background: white;
-            color: #333;
-            border: 1px solid #e0e0e0;
+            background: #2d2d30;
+            color: #e0e0e0;
+            border: 1px solid #404040;
             border-bottom-left-radius: 4px;
+            font-weight: 500;
         }
 
         .message-time {
-            font-size: 11px;
-            color: #999;
+            font-size: 10px;
+            color: #808080;
             margin-top: 4px;
+            font-weight: 600;
         }
 
         .supervision-notice {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffaa00;
             padding: 12px 16px;
-            border-radius: 8px;
+            border-radius: 4px;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 13px;
-            color: #856404;
+            font-size: 12px;
+            color: #ffaa00;
+            font-weight: 600;
         }
 
         /* Input Area */
         .input-area {
             padding: 20px 30px;
-            border-top: 1px solid #e0e0e0;
-            background: white;
+            border-top: 2px solid #404040;
+            background: #2d2d30;
         }
 
         .input-container {
@@ -347,30 +401,38 @@
         .input-container input {
             flex: 1;
             padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 24px;
+            border: 2px solid #404040;
+            border-radius: 4px;
             font-size: 14px;
-            transition: border-color 0.3s;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            transition: all 0.3s;
         }
 
         .input-container input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #00aaff;
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
         }
 
         .btn-send {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
             color: white;
-            border: none;
+            border: 2px solid #0088ff;
             padding: 12px 24px;
-            border-radius: 24px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: 600;
-            transition: transform 0.2s;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+            transition: all 0.2s;
         }
 
         .btn-send:hover {
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #0088ff 0%, #0066cc 100%);
+            box-shadow: 0 0 15px rgba(0, 136, 255, 0.5);
+            transform: scale(1.02);
         }
 
         .btn-send:active {
@@ -383,7 +445,7 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: #999;
+            color: #808080;
         }
 
         .empty-state-icon {
@@ -397,16 +459,153 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: #1a1a1a;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #888;
+            background: #404040;
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: #0088ff;
+        }
+
+        /* Police Tactical Styling */
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online { background: #00ff00; }
+        .status-busy { background: #ff4444; }
+        .status-away { background: #ffaa00; }
+        .status-offline { background: #666666; }
+        
+        .priority-high {
+            border-left: 4px solid #ff4444 !important;
+            background: rgba(255, 68, 68, 0.1) !important;
+        }
+        
+        .priority-urgent {
+            border-left: 4px solid #ff0000 !important;
+            background: rgba(255, 0, 0, 0.15) !important;
+            animation: urgentPulse 1s infinite;
+        }
+        
+        @keyframes urgentPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+        }
+        
+        .tactical-header {
+            background: linear-gradient(90deg, #1a1a1a 0%, #0066cc 50%, #1a1a1a 100%);
+            height: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .badge-display {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #00aaff;
+            font-size: 11px;
+        }
+        
+        .secure-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 2px 8px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .timestamp-tactical {
+            font-family: 'Courier New', monospace;
+            color: #808080;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .app-container {
+                height: 95vh;
+                border-radius: 4px;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 200px;
+                border-right: none;
+                border-bottom: 2px solid #404040;
+            }
+            
+            .chat-list {
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+            
+            .chat-item {
+                min-width: 200px;
+                border-right: 1px solid #404040;
+                border-bottom: none;
+            }
+            
+            .app-header {
+                padding: 10px 20px;
+            }
+            
+            .app-header h1 {
+                font-size: 18px;
+            }
+            
+            .user-badge {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+            
+            .btn-logout {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .sidebar {
+                height: 150px;
+            }
+            
+            .chat-item {
+                min-width: 150px;
+                padding: 12px 15px;
+            }
+            
+            .messages-container {
+                padding: 15px 20px;
+            }
+            
+            .input-area {
+                padding: 15px 20px;
+            }
         }
     </style>
 </head>
@@ -416,92 +615,93 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // Role Hierarchy Configuration
+        // Police Rank Hierarchy Configuration
         const ROLES = {
-            CLIENT: { name: 'Client', level: 0 },
-            GUARD: { name: 'Guard', level: 1 },
-            LEAD_OFFICER: { name: 'Lead Officer', level: 2 },
-            TRAINING_OFFICER: { name: 'Training Officer', level: 3 },
-            SUPERVISOR: { name: 'Supervisor', level: 4 },
-            OPERATIONS_MANAGER: { name: 'Operations Manager', level: 5 },
-            OPERATIONS_DIRECTOR: { name: 'Operations Director', level: 6 },
-            DISPATCH: { name: 'Dispatch', level: 7 },
-            SECRETARY: { name: 'Secretary', level: 8 },
-            CO_OWNER: { name: 'Co-Owner', level: 9 },
-            OWNER: { name: 'Owner', level: 10 }
+            CIVILIAN: { name: 'Civilian', level: 0, badge: 'CIV' },
+            CADET: { name: 'Police Cadet', level: 1, badge: 'CDT' },
+            OFFICER: { name: 'Police Officer', level: 2, badge: 'PO' },
+            CORPORAL: { name: 'Corporal', level: 3, badge: 'CPL' },
+            SERGEANT: { name: 'Sergeant', level: 4, badge: 'SGT' },
+            LIEUTENANT: { name: 'Lieutenant', level: 5, badge: 'LT' },
+            CAPTAIN: { name: 'Captain', level: 6, badge: 'CAPT' },
+            DISPATCHER: { name: 'Dispatcher', level: 7, badge: 'DISP' },
+            DETECTIVE: { name: 'Detective', level: 8, badge: 'DET' },
+            COMMANDER: { name: 'Commander', level: 9, badge: 'CMD' },
+            CHIEF: { name: 'Chief of Police', level: 10, badge: 'CHIEF' }
         };
 
-        // Test Accounts
+        // Police Personnel Database
         const USERS = {
-            testclient: { username: 'testclient', role: ROLES.CLIENT, displayName: 'Test Client' },
-            testguard1: { username: 'testguard1', role: ROLES.GUARD, displayName: 'Test Guard 1' },
-            testleadofficer: { username: 'testleadofficer', role: ROLES.LEAD_OFFICER, displayName: 'Test Lead Officer' },
-            testtrainingofficer: { username: 'testtrainingofficer', role: ROLES.TRAINING_OFFICER, displayName: 'Test Training Officer' },
-            testsupervisor: { username: 'testsupervisor', role: ROLES.SUPERVISOR, displayName: 'Test Supervisor' },
-            testoperationsmanager: { username: 'testoperationsmanager', role: ROLES.OPERATIONS_MANAGER, displayName: 'Test Operations Manager' },
-            testoperationsdirector: { username: 'testoperationsdirector', role: ROLES.OPERATIONS_DIRECTOR, displayName: 'Test Operations Director' },
-            testdispatch: { username: 'testdispatch', role: ROLES.DISPATCH, displayName: 'Test Dispatch' },
-            testsecretary: { username: 'testsecretary', role: ROLES.SECRETARY, displayName: 'Test Secretary' },
-            testcoowner: { username: 'testcoowner', role: ROLES.CO_OWNER, displayName: 'Test Co-Owner' },
-            testowner: { username: 'testowner', role: ROLES.OWNER, displayName: 'Test Owner' }
+            civilian001: { username: 'civilian001', role: ROLES.CIVILIAN, displayName: 'John Doe', badge: 'N/A', status: 'offline' },
+            cadet001: { username: 'cadet001', role: ROLES.CADET, displayName: 'Sarah Johnson', badge: '1001', status: 'online' },
+            officer001: { username: 'officer001', role: ROLES.OFFICER, displayName: 'Mike Rodriguez', badge: '2001', status: 'online' },
+            corporal001: { username: 'corporal001', role: ROLES.CORPORAL, displayName: 'Lisa Chen', badge: '3001', status: 'busy' },
+            sergeant001: { username: 'sergeant001', role: ROLES.SERGEANT, displayName: 'David Thompson', badge: '4001', status: 'online' },
+            lieutenant001: { username: 'lieutenant001', role: ROLES.LIEUTENANT, displayName: 'Amanda Wilson', badge: '5001', status: 'away' },
+            captain001: { username: 'captain001', role: ROLES.CAPTAIN, displayName: 'Robert Martinez', badge: '6001', status: 'online' },
+            dispatcher001: { username: 'dispatcher001', role: ROLES.DISPATCHER, displayName: 'Emily Davis', badge: 'D001', status: 'online' },
+            detective001: { username: 'detective001', role: ROLES.DETECTIVE, displayName: 'James Anderson', badge: 'DT001', status: 'busy' },
+            commander001: { username: 'commander001', role: ROLES.COMMANDER, displayName: 'Patricia Brown', badge: 'CMD001', status: 'online' },
+            chief001: { username: 'chief001', role: ROLES.CHIEF, displayName: 'William Garcia', badge: 'CHIEF', status: 'away' }
         };
 
-        // Chat Categories Configuration
+        // Police Communication Channels
         const CHAT_TYPES = {
-            MISSION: 'Mission Chat',
-            TRAINING: 'Training Chat',
-            SUPERVISION: 'Supervision Chat',
-            OPERATIONS: 'Operations Chat',
-            DISPATCH: 'Dispatch Chat',
-            MANAGEMENT: 'Management Chat',
-            DIRECT: 'Direct Chat'
+            PATROL: 'Patrol Comm',
+            TACTICAL: 'Tactical Ops',
+            DISPATCH: 'Dispatch',
+            INVESTIGATION: 'Investigation',
+            COMMAND: 'Command',
+            TRAINING: 'Training',
+            ADMIN: 'Administration',
+            EMERGENCY: 'Emergency'
         };
 
-        // Define chat configurations based on roles
+        // Define communication channels based on police ranks
         const getChatConfigurations = (currentUser) => {
             const configs = [];
 
-            if (currentUser.role === ROLES.GUARD) {
+            if (currentUser.role === ROLES.OFFICER || currentUser.role === ROLES.CADET) {
                 configs.push(
-                    { type: CHAT_TYPES.MISSION, participants: ['testguard1', 'testleadofficer'], description: 'Discuss mission assignments and updates' },
-                    { type: CHAT_TYPES.TRAINING, participants: ['testguard1', 'testtrainingofficer'], description: 'Training topics and guidance' },
-                    { type: CHAT_TYPES.SUPERVISION, participants: ['testguard1', 'testsupervisor'], description: 'Reports and oversight discussions' },
-                    { type: CHAT_TYPES.OPERATIONS, participants: ['testguard1', 'testoperationsmanager', 'testoperationsdirector'], description: 'Company operations and management' },
-                    { type: CHAT_TYPES.DISPATCH, participants: ['testguard1', 'testdispatch'], description: 'Real-time field coordination' },
-                    { type: CHAT_TYPES.MANAGEMENT, participants: ['testguard1', 'testsecretary', 'testcoowner', 'testowner'], description: 'Executive communication' }
+                    { type: CHAT_TYPES.PATROL, participants: ['officer001', 'corporal001'], description: 'Street patrol coordination and updates' },
+                    { type: CHAT_TYPES.TRAINING, participants: ['cadet001', 'sergeant001'], description: 'Training protocols and field guidance' },
+                    { type: CHAT_TYPES.DISPATCH, participants: ['officer001', 'dispatcher001'], description: 'Real-time dispatch communications' },
+                    { type: CHAT_TYPES.COMMAND, participants: ['officer001', 'lieutenant001', 'captain001'], description: 'Command structure communications' }
                 );
-            } else if (currentUser.role === ROLES.LEAD_OFFICER) {
+            } else if (currentUser.role === ROLES.CORPORAL) {
                 configs.push(
-                    { type: CHAT_TYPES.MISSION, participants: ['testguard1', 'testleadofficer'], description: 'Mission coordination with guards' },
-                    { type: CHAT_TYPES.SUPERVISION, participants: ['testleadofficer', 'testsupervisor'], description: 'Supervision and reporting' },
-                    { type: CHAT_TYPES.OPERATIONS, participants: ['testleadofficer', 'testoperationsmanager', 'testoperationsdirector'], description: 'Operations coordination' }
+                    { type: CHAT_TYPES.PATROL, participants: ['officer001', 'corporal001'], description: 'Patrol supervision and coordination' },
+                    { type: CHAT_TYPES.TACTICAL, participants: ['corporal001', 'sergeant001'], description: 'Tactical operations planning' },
+                    { type: CHAT_TYPES.COMMAND, participants: ['corporal001', 'lieutenant001'], description: 'Command reporting' }
                 );
-            } else if (currentUser.role === ROLES.TRAINING_OFFICER) {
+            } else if (currentUser.role === ROLES.SERGEANT) {
                 configs.push(
-                    { type: CHAT_TYPES.TRAINING, participants: ['testguard1', 'testtrainingofficer'], description: 'Guard training and development' },
-                    { type: CHAT_TYPES.SUPERVISION, participants: ['testtrainingofficer', 'testsupervisor'], description: 'Training oversight' }
+                    { type: CHAT_TYPES.TRAINING, participants: ['cadet001', 'sergeant001'], description: 'Officer training and development' },
+                    { type: CHAT_TYPES.TACTICAL, participants: ['corporal001', 'sergeant001'], description: 'Tactical coordination' },
+                    { type: CHAT_TYPES.COMMAND, participants: ['sergeant001', 'lieutenant001', 'captain001'], description: 'Command operations' }
                 );
-            } else if (currentUser.role === ROLES.SUPERVISOR) {
+            } else if (currentUser.role === ROLES.LIEUTENANT || currentUser.role === ROLES.CAPTAIN) {
                 configs.push(
-                    { type: CHAT_TYPES.SUPERVISION, participants: ['testguard1', 'testsupervisor'], description: 'Guard supervision' },
-                    { type: CHAT_TYPES.SUPERVISION, participants: ['testleadofficer', 'testsupervisor'], description: 'Lead officer oversight' },
-                    { type: CHAT_TYPES.SUPERVISION, participants: ['testtrainingofficer', 'testsupervisor'], description: 'Training oversight' },
-                    { type: CHAT_TYPES.OPERATIONS, participants: ['testsupervisor', 'testoperationsmanager', 'testoperationsdirector'], description: 'Operations reporting' }
+                    { type: CHAT_TYPES.COMMAND, participants: ['officer001', 'lieutenant001', 'captain001'], description: 'Field command operations' },
+                    { type: CHAT_TYPES.COMMAND, participants: ['corporal001', 'lieutenant001'], description: 'Supervisory coordination' },
+                    { type: CHAT_TYPES.COMMAND, participants: ['sergeant001', 'lieutenant001', 'captain001'], description: 'Strategic planning' },
+                    { type: CHAT_TYPES.ADMIN, participants: ['captain001', 'commander001', 'chief001'], description: 'Administrative coordination' }
                 );
-            } else if (currentUser.role === ROLES.OPERATIONS_MANAGER || currentUser.role === ROLES.OPERATIONS_DIRECTOR) {
+            } else if (currentUser.role === ROLES.DISPATCHER) {
                 configs.push(
-                    { type: CHAT_TYPES.OPERATIONS, participants: ['testguard1', 'testoperationsmanager', 'testoperationsdirector'], description: 'Guard operations' },
-                    { type: CHAT_TYPES.OPERATIONS, participants: ['testsupervisor', 'testoperationsmanager', 'testoperationsdirector'], description: 'Supervisor coordination' },
-                    { type: CHAT_TYPES.MANAGEMENT, participants: ['testoperationsmanager', 'testoperationsdirector', 'testsecretary', 'testcoowner', 'testowner'], description: 'Executive operations' }
+                    { type: CHAT_TYPES.DISPATCH, participants: ['officer001', 'dispatcher001'], description: 'Emergency dispatch coordination' },
+                    { type: CHAT_TYPES.EMERGENCY, participants: ['dispatcher001', 'sergeant001', 'lieutenant001'], description: 'Emergency response coordination' }
                 );
-            } else if (currentUser.role === ROLES.DISPATCH) {
+            } else if (currentUser.role === ROLES.DETECTIVE) {
                 configs.push(
-                    { type: CHAT_TYPES.DISPATCH, participants: ['testguard1', 'testdispatch'], description: 'Field coordination with guards' }
+                    { type: CHAT_TYPES.INVESTIGATION, participants: ['detective001', 'sergeant001'], description: 'Criminal investigation coordination' },
+                    { type: CHAT_TYPES.INVESTIGATION, participants: ['detective001', 'captain001'], description: 'Case management and reporting' }
                 );
-            } else if (currentUser.role.level >= ROLES.SECRETARY.level) {
+            } else if (currentUser.role.level >= ROLES.COMMANDER.level) {
                 configs.push(
-                    { type: CHAT_TYPES.MANAGEMENT, participants: ['testguard1', 'testsecretary', 'testcoowner', 'testowner'], description: 'Executive-Guard communication' },
-                    { type: CHAT_TYPES.MANAGEMENT, participants: ['testoperationsmanager', 'testoperationsdirector', 'testsecretary', 'testcoowner', 'testowner'], description: 'Executive management' }
+                    { type: CHAT_TYPES.ADMIN, participants: ['captain001', 'commander001', 'chief001'], description: 'Department administration' },
+                    { type: CHAT_TYPES.COMMAND, participants: ['lieutenant001', 'commander001'], description: 'Strategic command oversight' },
+                    { type: CHAT_TYPES.EMERGENCY, participants: ['dispatcher001', 'sergeant001', 'lieutenant001'], description: 'Emergency response oversight' }
                 );
             }
 
@@ -576,20 +776,20 @@
             return (
                 <div className="login-container">
                     <div className="login-box">
-                        <h1>🔒 SecureChat</h1>
-                        <p>Internal Company Messenger</p>
+                        <h1>🚔 PoliceComm</h1>
+                        <p>Tactical Communications System</p>
                         <form onSubmit={handleLogin}>
                             <div className="form-group">
-                                <label>Select Test Account</label>
+                                <label>Select Officer ID</label>
                                 <select 
                                     value={selectedUser} 
                                     onChange={(e) => setSelectedUser(e.target.value)}
                                     required
                                 >
-                                    <option value="">-- Select Account --</option>
+                                    <option value="">-- Select Officer --</option>
                                     {Object.entries(USERS).map(([username, user]) => (
                                         <option key={username} value={username}>
-                                            {user.displayName} ({user.role.name})
+                                            {user.role.badge} {user.displayName} - {user.role.name}
                                         </option>
                                     ))}
                                 </select>
@@ -616,17 +816,32 @@
                 return otherParticipants.join(', ');
             };
 
+            const getChannelIcon = () => {
+                switch(chat.type) {
+                    case CHAT_TYPES.PATROL: return '🚔';
+                    case CHAT_TYPES.TACTICAL: return '🎯';
+                    case CHAT_TYPES.DISPATCH: return '📡';
+                    case CHAT_TYPES.INVESTIGATION: return '🔍';
+                    case CHAT_TYPES.COMMAND: return '⭐';
+                    case CHAT_TYPES.TRAINING: return '🎓';
+                    case CHAT_TYPES.ADMIN: return '📋';
+                    case CHAT_TYPES.EMERGENCY: return '🚨';
+                    default: return '💬';
+                }
+            };
+
+            const isEmergencyChannel = chat.type === CHAT_TYPES.EMERGENCY;
+            const itemClass = `chat-item ${isActive ? 'active' : ''} ${isEmergencyChannel ? 'priority-urgent' : ''}`;
+
             return (
-                <div 
-                    className={`chat-item ${isActive ? 'active' : ''}`}
-                    onClick={onClick}
-                >
+                <div className={itemClass} onClick={onClick}>
+                    <div className="tactical-header"></div>
                     <div className="chat-item-title">
-                        {getChatTitle()}
+                        {getChannelIcon()} {getChatTitle()}
                         <span className="chat-badge">{chat.type}</span>
                     </div>
                     <div className="chat-item-subtitle">
-                        {supervising && '👁️ Supervising • '}
+                        {supervising && '📹 MONITORING • '}
                         {lastMessage ? lastMessage.text : chat.description}
                     </div>
                 </div>
@@ -642,14 +857,15 @@
                 <div className={`message ${isSent ? 'sent' : 'received'}`}>
                     {!isSent && (
                         <div className="message-header">
-                            {sender.displayName} • {sender.role.name}
+                            <span className={`status-indicator status-${sender.status || 'online'}`}></span>
+                            <span className="badge-display">{sender.role.badge}</span> {sender.displayName} • {sender.role.name}
                         </div>
                     )}
                     <div className="message-bubble">
                         {message.text}
                     </div>
-                    <div className="message-time">
-                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <div className="message-time timestamp-tactical">
+                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })} UTC
                     </div>
                 </div>
             );
@@ -698,19 +914,35 @@
                 return otherParticipants.join(', ');
             };
 
+            const getChannelIcon = () => {
+                switch(chat.type) {
+                    case CHAT_TYPES.PATROL: return '🚔';
+                    case CHAT_TYPES.TACTICAL: return '🎯';
+                    case CHAT_TYPES.DISPATCH: return '📡';
+                    case CHAT_TYPES.INVESTIGATION: return '🔍';
+                    case CHAT_TYPES.COMMAND: return '⭐';
+                    case CHAT_TYPES.TRAINING: return '🎓';
+                    case CHAT_TYPES.ADMIN: return '📋';
+                    case CHAT_TYPES.EMERGENCY: return '🚨';
+                    default: return '💬';
+                }
+            };
+
             return (
-                <div className="chat-area">
+                <div className="chat-area" style={{position: 'relative'}}>
+                    <div className="secure-indicator">SECURE</div>
                     <div className="chat-header">
-                        <h3>{getChatTitle()}</h3>
+                        <div className="tactical-header"></div>
+                        <h3>{getChannelIcon()} {getChatTitle()}</h3>
                         <p>{chat.type} • {chat.description}</p>
                     </div>
                     <div className="messages-container">
                         {supervising && (
                             <div className="supervision-notice">
-                                <span>👁️</span>
+                                <span>📹</span>
                                 <div>
-                                    <strong>Supervision Mode:</strong> You are monitoring this conversation. 
-                                    Messages sent by participants are visible to you due to your higher rank.
+                                    <strong>COMMAND OVERSIGHT:</strong> You are monitoring this secure channel. 
+                                    All communications are logged and visible due to your command authority.
                                 </div>
                             </div>
                         )}
@@ -722,13 +954,13 @@
                     <div className="input-area">
                         {supervising ? (
                             <div style={{ textAlign: 'center', color: '#999', fontStyle: 'italic' }}>
-                                You are in supervision mode. You can view messages but cannot send them in this chat.
+                                COMMAND OVERSIGHT MODE - Monitoring only. Communications restricted to authorized channel participants.
                             </div>
                         ) : (
                             <form onSubmit={handleSend} className="input-container">
                                 <input
                                     type="text"
-                                    placeholder="Type a message..."
+                                    placeholder="Enter message... [SECURE LINE]"
                                     value={inputText}
                                     onChange={(e) => setInputText(e.target.value)}
                                 />
@@ -762,16 +994,21 @@
             };
 
             if (!currentUser) {
-                return <LoginScreen onLogin={setCurrentUser} />;
+                return (
+                    <div style={{position: 'relative'}}>
+                        <div className="secure-indicator">SECURE LOGIN</div>
+                        <LoginScreen onLogin={setCurrentUser} />
+                    </div>
+                );
             }
 
             return (
                 <div className="app-container">
                     <div className="app-header">
-                        <h1>🔒 SecureChat</h1>
+                        <h1>🚔 PoliceComm</h1>
                         <div className="user-info">
                             <div className="user-badge">
-                                {currentUser.displayName} • {currentUser.role.name}
+                                {currentUser.role.badge} {currentUser.displayName} • {currentUser.role.name}
                             </div>
                             <button className="btn-logout" onClick={handleLogout}>
                                 Logout
@@ -781,9 +1018,9 @@
                     <div className="main-content">
                         <div className="sidebar">
                             <div className="sidebar-header">
-                                <h2>Chats</h2>
+                                <h2>Channels</h2>
                                 <p style={{ fontSize: '13px', color: '#666' }}>
-                                    {accessibleChats.length} conversation{accessibleChats.length !== 1 ? 's' : ''}
+                                    {accessibleChats.length} active channel{accessibleChats.length !== 1 ? 's' : ''}
                                 </p>
                             </div>
                             <div className="chat-list">
@@ -803,9 +1040,9 @@
                         ) : (
                             <div className="chat-area">
                                 <div className="empty-state">
-                                    <div className="empty-state-icon">💬</div>
-                                    <h3>No chat selected</h3>
-                                    <p>Select a conversation to start messaging</p>
+                                    <div className="empty-state-icon">📶</div>
+                                    <h3>No channel selected</h3>
+                                    <p>Select a communication channel to begin</p>
                                 </div>
                             </div>
                         )}
